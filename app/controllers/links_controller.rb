@@ -4,7 +4,11 @@ class LinksController < ApplicationController
   # GET /links
   # GET /links.json
   def index
-    @links = Link.all
+    if params['hide_downloaded'] == "true" or params['hide_downloaded'] == "True"
+      @links = Link.where(downloaded: false)
+    else
+      @links = Link.all
+    end
   end
 
   # GET /links/1
@@ -69,6 +73,6 @@ class LinksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def link_params
-      params.require(:link).permit(:name, :url, :path)
+      params.require(:link).permit(:name, :url, :path, :downloaded)
     end
 end
